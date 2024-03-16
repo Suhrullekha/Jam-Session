@@ -17,7 +17,7 @@ def generate_unique_code():
 #pretty much a table 
 class Room(models.Model):
     #what are the things/attribuetes that each room that is hosted have? 
-    code = models.CharField(max_length = 8, default="", unique=True) #will store characters 
+    code = models.CharField(max_length = 8, default=generate_unique_code, unique=True) #will store characters and call that function by default
     host = models.CharField(max_length=50, unique=True) #unique = one host per room
     guest_can_pause = models.BooleanField(null=False, default=False)
     votes_to_skip = models.IntegerField(null=False, default=1)
