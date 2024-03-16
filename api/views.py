@@ -13,6 +13,21 @@ class RoomView(generics.ListAPIView): #a view that returns all the diff rooms
     queryset = Room.objects.all()
     serializer_class = RoomSerializer 
 
+class GetRoom(APIView):
+    serializer_class = RoomSerializer
+    lookup_url_kwarg = 'code' #key word arguement 
+
+    def get(self, request, format= None):
+        code = request.GET.get(self.lookup_url_kwarg) #extract the code from url
+        if code != None: 
+            room = Room.objects.filter(code = code)
+            if len(room)>0:
+                data = RoomSerializer(room[0]).data #gets all info from that code 
+                data['is_host'] = self.request.session.session_key == room[0].host 
+                return Response(data, status=status.HTTP_200_OK) #the current host is the host of the code 
+            return Response({'Room Not Found':'Invalid Room code'}, status=status.HTTP_404_NOT_FOUND) #room doesnt exists
+        return Response({"Bad Request": "Code not found"}, status=status.HTTP_400_BAD_REQUEST)
+
 class CreateRoomView(APIView):
     serializer_class = CreateRoomSerializer
     def post(self, request, format = None):

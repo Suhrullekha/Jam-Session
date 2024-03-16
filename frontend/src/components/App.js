@@ -1,6 +1,6 @@
 import React, { Component } from "react"; 
 import { render }  from "react-dom"; 
-import HomePage from "./HomePage";
+import HomePage from "./Homepage";
 
 
 export default class App extends Component{ //we have to render this componet inside the index.html (the js file)
